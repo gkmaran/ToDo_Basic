@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './renderTask.css'
+import { parse, format, isBefore } from 'date-fns';
 function TaskItem({todos,deleteTask,toggleItem,editTask}){
     const[showPending,setShowPending]=useState(false)
 
@@ -7,12 +8,20 @@ function TaskItem({todos,deleteTask,toggleItem,editTask}){
         setShowPending(!showPending)
     }
     const getPendingTasks = () => {
-        const today = new Date().toISOString().split('T')[0];
+        const today = format(new Date(), 'yyyy-MM-dd');
         return todos.filter(item => {
-            const taskDate = new Date(item.created_At).toISOString().split('T')[0];
-            return !item.is_completed && new Date(taskDate) < new Date(today);
+            try {
+                const taskDate = format(
+                    parse(item.created_At, 'yyyy-MM-dd, hh:mm a', new Date()), 
+                    'yyyy-MM-dd'
+                ); 
+                return !item.is_completed && isBefore(new Date(taskDate), new Date(today));
+            } catch (error) {
+                console.error('Error parsing date:', item.created_At, error);
+                return false;
+            }
         });
-    }; 
+    };
     return(
         <div className='render-list'>
              <button onClick={handleShowPending}>

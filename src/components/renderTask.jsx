@@ -10,7 +10,7 @@ function TaskItem({todos,deleteTask,toggleItem,editTask}){
         const today = new Date().toISOString().split('T')[0];
         return todos.filter(item => {
             const taskDate = new Date(item.created_At).toISOString().split('T')[0];
-            return !item.is_completed && taskDate < today;
+            return !item.is_completed && new Date(taskDate) < new Date(today);
         });
     }; 
     return(

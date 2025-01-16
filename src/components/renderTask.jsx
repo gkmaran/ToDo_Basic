@@ -8,19 +8,24 @@ function TaskItem({todos,deleteTask,toggleItem,editTask}){
         setShowPending(!showPending)
     }
     const getPendingTasks = () => {
-    const today = new Date();
-    const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()); 
-
-    return todos.filter(item => {
-        const taskDate = new Date(item.created_At); 
-        const normalizedTaskDate = new Date(
-            taskDate.getFullYear(),
-            taskDate.getMonth(),
-            taskDate.getDate() 
-        );
-        return !item.is_completed && isBefore(normalizedTaskDate, todayDate);
-    });
-};
+        const today = new Date(); // Current date
+        return todos.filter(item => {
+            try {
+                // Parse the creation date
+                const taskDate = new Date(item.created_At);
+    
+                // Normalize both dates to ensure time zones don't interfere
+                const normalizedTaskDate = new Date(taskDate.setHours(0, 0, 0, 0));
+                const normalizedToday = new Date(today.setHours(0, 0, 0, 0));
+    
+                // Check if the task is pending
+                return !item.is_completed && normalizedTaskDate < normalizedToday;
+            } catch (error) {
+                console.error('Error parsing date:', item.created_At, error);
+                return false;
+            }
+        });
+    };    
     return(
         <div className='render-list'>
              <button onClick={handleShowPending}>
@@ -37,8 +42,6 @@ function TaskItem({todos,deleteTask,toggleItem,editTask}){
                                 <h3>{item.name}</h3>
                                 <p>Created At: {item.created_At}</p>
                                 <p>Pending Since: {item.created_At}</p>
-                                <button className='delBtn' onClick={() => deleteTask(item.id)}><i class="fa fa-trash" aria-hidden="true"></i></button>
-                                <button className='editBtn' onClick={() => editTask(item)}><i class="fas fa-edit"></i></button>
                             </div>
                         ))
                     ) : (

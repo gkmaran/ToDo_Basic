@@ -1,45 +1,8 @@
 import { useState } from 'react'
 import './renderTask.css'
-import {isBefore, parseISO,startOfDay} from 'date-fns';
 function TaskItem({todos,deleteTask,toggleItem,editTask}){
-    const[showPending,setShowPending]=useState(false)
-
-    const handleShowPending=()=>{
-        setShowPending(!showPending)
-    }
-    const getPendingTasks = () => {
-        const todayStart = startOfDay(new Date());
-        return todos.filter(item => {
-            const taskDate = startOfDay(new Date(item.created_At));
-            return !item.is_completed && isBefore(taskDate, todayStart);
-        });
-    };    
     return(
-        <div className='render-list'>
-             <button onClick={handleShowPending}>
-                {showPending ? "All Tasks": "Pending Tasks"}
-            </button>
-
-            {/* Render Pending Tasks */}
-            {showPending && (
-                <div>
-                    <h3>Pending Tasks</h3>
-                    {getPendingTasks().length > 0 ? (
-                        getPendingTasks().map(item => (
-                            <div key={item.id} className="renderlist-child">
-                                <h3>{item.name}</h3>
-                                <p>Created At: {item.created_At}</p>
-                                <p>Pending Since: {item.created_At}</p>
-                            </div>
-                        ))
-                    ) : (
-                        <p>No Pending Tasks Available</p>
-                    )}
-                </div>
-            )}
-
-            {!showPending && (
-            <div>
+            <div className='render-list'>
                 <h3>All Tasks</h3>
                 {todos.length>0 ?(
                 todos.map(item=>(
@@ -55,7 +18,4 @@ function TaskItem({todos,deleteTask,toggleItem,editTask}){
                 (<p>No Tasks Available</p>)}
             </div>
         )}
-         </div>
-    )
-}
 export default TaskItem

@@ -9,7 +9,7 @@ function App() {
   const {todos,input}=useSelector(state=>state.todos)
   const dispatch=useDispatch()
   const addTask=(input)=>{
-    let obj={id:Date.now(),name:input,is_completed:false,created_At:new Date().toISOString()}
+    let obj={id:Date.now(),name:input,is_completed:false,created_At:new Date().toLocaleString()}
     let action={type:'ADD_TASK',payload:obj}
     dispatch(action)
   }

@@ -1,6 +1,6 @@
 import './App.css'
 import { useSelector,useDispatch } from 'react-redux'
-import { useState,useEffect} from 'react'
+import {useEffect} from 'react'
 import InputForm from './components/InputForm'
 import TaskItem from './components/renderTask'
 
@@ -9,7 +9,7 @@ function App() {
   const {todos,input}=useSelector(state=>state.todos)
   const dispatch=useDispatch()
   const date=new Date();
-  const createdAt=date.toLocaleString()
+  const createdAt=date.toISOString()
   const addTask=(input)=>{
     let obj={id:Date.now(),name:input,is_completed:false,created_At:createdAt}
     let action={type:'ADD_TASK',payload:obj}

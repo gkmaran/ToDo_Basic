@@ -20,7 +20,7 @@ function InputForm({addTask,updateTask}){
     return(
         <div>
             <h1>To_Do_List</h1>
-            <input value={input} type="text" onChange={handleInput} placeholder={error ? 'Input Empty' :'Enter Task'} style={{borderColor:error ? 'red':""}}/>
+            <input value={input} type="text" onChange={handleInput} placeholder={error ? 'Input Is Empty' :'Enter Task'} style={{borderColor:error ? 'red':""}}/>
             {id===0 ?(<button onClick={createItem}>AddTask</button>):(<button onClick={()=>updateTask(id)}>EditTask</button>)}
         </div>
     )

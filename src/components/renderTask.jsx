@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './renderTask.css'
-import { parse, format, isBefore } from 'date-fns';
+import { parse, format, isBefore, parseISO } from 'date-fns';
 function TaskItem({todos,deleteTask,toggleItem,editTask}){
     const[showPending,setShowPending]=useState(false)
 
@@ -8,28 +8,22 @@ function TaskItem({todos,deleteTask,toggleItem,editTask}){
         setShowPending(!showPending)
     }
     const getPendingTasks = () => {
-        const today = new Date(); // Current date
-        return todos.filter(item => {
-            try {
-                // Parse the creation date
-                const taskDate = new Date(item.created_At);
-    
-                // Normalize both dates to ensure time zones don't interfere
-                const normalizedTaskDate = new Date(taskDate.setHours(0, 0, 0, 0));
-                const normalizedToday = new Date(today.setHours(0, 0, 0, 0));
-    
-                // Check if the task is pending
-                return !item.is_completed && normalizedTaskDate < normalizedToday;
-            } catch (error) {
-                console.error('Error parsing date:', item.created_At, error);
-                return false;
-            }
-        });
-    };    
+    const today = new Date();
+    const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()); 
+    return todos.filter(item => {
+        const taskDate = parseISO(item.created_At); 
+        const normalizedTaskDate = new Date(
+            taskDate.getFullYear(),
+            taskDate.getMonth(),
+            taskDate.getDate() 
+        );
+        return !item.is_completed && isBefore(normalizedTaskDate, todayDate);
+    });
+};
     return(
         <div className='render-list'>
              <button onClick={handleShowPending}>
-                {showPending ? "Hide Pending Tasks" : "Show Pending Tasks"}
+                {showPending ? "All Tasks": "Pending Tasks"}
             </button>
 
             {/* Render Pending Tasks */}
@@ -45,7 +39,7 @@ function TaskItem({todos,deleteTask,toggleItem,editTask}){
                             </div>
                         ))
                     ) : (
-                        <p>No Pending Tasks</p>
+                        <p>No Pending Tasks Available</p>
                     )}
                 </div>
             )}
@@ -60,8 +54,8 @@ function TaskItem({todos,deleteTask,toggleItem,editTask}){
                 <h3 className={item.is_completed ? "line-through" :''}>{item.name}</h3>
                 {item.editedAt ? (<p> editedAt: {item.editedAt}</p>)
                 :(<p>CreatedAt: {item.created_At}</p>)}
-                <button className='delBtn' onClick={()=>deleteTask(item.id)}><i class="fa fa-trash" aria-hidden="true"></i></button>
-                <button className='editBtn' onClick={()=>editTask(item)}><i class="fas fa-edit"></i></button>
+                <button className='delBtn' onClick={()=>deleteTask(item.id)}><i className="fa fa-trash" aria-hidden="true"></i></button>
+                <button className='editBtn' onClick={()=>editTask(item)}><i className="fas fa-edit"></i></button>
                 </div> 
                 ))):
                 (<p>No Tasks Available</p>)}

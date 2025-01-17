@@ -8,10 +8,8 @@ function App() {
  
   const {todos,input}=useSelector(state=>state.todos)
   const dispatch=useDispatch()
-  const date=new Date();
-  const createdAt=date.toISOString()
   const addTask=(input)=>{
-    let obj={id:Date.now(),name:input,is_completed:false,created_At:createdAt}
+    let obj={id:Date.now(),name:input,is_completed:false,created_At:new Date().toISOString()}
     let action={type:'ADD_TASK',payload:obj}
     dispatch(action)
   }

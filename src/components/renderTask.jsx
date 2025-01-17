@@ -8,18 +8,17 @@ function TaskItem({todos,deleteTask,toggleItem,editTask}){
         setShowPending(!showPending)
     }
     const getPendingTasks = () => {
-    const today = startOfDay(new Date());
-    const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()); 
-    return todos.filter(item => {
-        const taskDate = parseISO(item.created_At); 
-        const normalizedTaskDate = new Date(
-            taskDate.getFullYear(),
-            taskDate.getMonth(),
-            taskDate.getDate() 
-        );
-        return !item.is_completed && isBefore(normalizedTaskDate, todayDate);
-    });
-};
+        const todayStart = startOfDay(new Date()); 
+        return todos.filter(item => {
+            try {
+                const taskDate = parseISO(item.created_At);
+                return !item.is_completed && isBefore(taskDate, todayStart);
+            } catch (error) {
+                console.error('Error parsing date:', item.created_At, error);
+                return false;
+            }
+        });
+    };
     return(
         <div className='render-list'>
              <button onClick={handleShowPending}>

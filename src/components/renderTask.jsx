@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './renderTask.css'
-import { parse, format, isBefore, parseISO } from 'date-fns';
+import {isBefore, parseISO,startOfDay} from 'date-fns';
 function TaskItem({todos,deleteTask,toggleItem,editTask}){
     const[showPending,setShowPending]=useState(false)
 
@@ -8,7 +8,7 @@ function TaskItem({todos,deleteTask,toggleItem,editTask}){
         setShowPending(!showPending)
     }
     const getPendingTasks = () => {
-    const today = new Date();
+    const today = startOfDay(new Date());
     const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()); 
     return todos.filter(item => {
         const taskDate = parseISO(item.created_At); 

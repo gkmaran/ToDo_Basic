@@ -10,7 +10,7 @@ const todoreducer=(state=initialState,action)=>{
         return { ...state, todos: state.todos.filter((item) => item.id !== action.payload) };
     }
     else if(action.type==='TOGGLE_ITEM'){
-        return {...state ,todos: state.todos.map(item=>item.id===action.payload ? {...item,is_completed:!item.is_completed} :item)}
+        return {...state ,todos: state.todos.map(item=>item.id===action.payload ? {...item,is_completed:!item.is_completed,completedAt: !item.is_completed ? new Date().toLocaleString() : null,} :item)}
     }
     else if(action.type==='SET_INPUT'){
         return {...state,input:action.payload}

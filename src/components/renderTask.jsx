@@ -7,7 +7,7 @@ function TaskItem({todos,deleteTask,toggleItem,editTask}){
     }
     return(
             <div className='render-list'>
-                <button onClick={()=>setcompleted(!completed)}>{completed ? "AllTask" : "CompletedTask"}</button>
+                <button onClick={()=>setcompleted(!completed)}>{completed ? "ShowAllTask" : "ShowCompletedTask"}</button>
                 {completed ?(
                     <div>
                         <h3>CompletedTask</h3>
@@ -15,6 +15,7 @@ function TaskItem({todos,deleteTask,toggleItem,editTask}){
                             (getCompletedTask().map(item=>(
                                 <div key={item.id} className='renderlist-child'>
                                 <h3>{item.name}</h3>
+                                <p>completedAt:{item.completedAt}</p>
                                 <button className='delBtn' onClick={()=>deleteTask(item.id)}><i className="fa fa-trash" aria-hidden="true"></i></button>
                                 </div> 
                             ))

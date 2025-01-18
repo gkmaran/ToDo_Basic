@@ -68,7 +68,7 @@ function TaskItem({ todos, deleteTask, toggleItem, editTask }) {
             pendingTasks.map((item) => (
               <div key={item.id} className="renderlist-child">
                 <h3>{item.name}</h3>
-                <p>Created At: {item.createdAt}</p>
+                <p>Created At: {item.created_At}</p>
                 <button className="delBtn" onClick={() => deleteTask(item.id)}>
                   <i className="fa fa-trash" aria-hidden="true"></i>
                 </button>

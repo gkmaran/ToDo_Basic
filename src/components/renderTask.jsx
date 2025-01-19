@@ -2,32 +2,31 @@ import { useState } from 'react';
 import './renderTask.css';
 
 function TaskItem({ todos, deleteTask, toggleItem, editTask }) {
-  const [currentView, setCurrentView] = useState('all'); // 'all', 'pending', 'completed'
-
+  const [currentView, setCurrentView] = useState('all'); 
   const getCompletedTasks = () => todos.filter((item) => item.is_completed);
 
   const getPendingTasks = () => {
-    const oneDayInMs = 24 * 60 * 60 * 1000;
-    const now = new Date();
-    return todos.filter(
-      (task) =>
-        !task.is_completed && now - new Date(task.createdAt) > oneDayInMs
-    );
+    const oneDayInMs = 24 * 60 * 60 * 1000; 
+    const now = new Date().getTime(); 
+      return todos.filter((task) => {
+      const createdAtTime = new Date(task.created_At).getTime(); 
+      return !task.is_completed && now - createdAtTime > oneDayInMs;
+    });
   };
+  
 
   const completedTasks = getCompletedTasks();
   const pendingTasks = getPendingTasks();
+  console.log(pendingTasks)
 
   return (
     <div className="render-list">
-      {/* Navigation Buttons */}
       <div className="navigation-buttons">
         <button onClick={() => setCurrentView('all')}>All Tasks</button>
         <button onClick={() => setCurrentView('pending')}>Pending Tasks</button>
         <button onClick={() => setCurrentView('completed')}>Completed Tasks</button>
       </div>
 
-      {/* Render based on the current view */}
       {currentView === 'all' && (
         <div>
           <h3>All Tasks</h3>
@@ -68,7 +67,7 @@ function TaskItem({ todos, deleteTask, toggleItem, editTask }) {
             pendingTasks.map((item) => (
               <div key={item.id} className="renderlist-child">
                 <h3>{item.name}</h3>
-                <p>Created At: {item.created_At}</p>
+                <p>pending Since: {item.created_At}</p>
                 <button className="delBtn" onClick={() => deleteTask(item.id)}>
                   <i className="fa fa-trash" aria-hidden="true"></i>
                 </button>

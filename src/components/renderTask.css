@@ -71,15 +71,18 @@ button {
     background-color: #388e3c;
 }
 .renderlist-child h3 {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     margin: 0;
     flex: 1;
 }
 
 .renderlist-child p {
     font-size: 0.9rem;
-    color: #666;
+    color: #b0aeae;
     margin: 0;
+}
+.navigation-buttons button{
+    margin: 5px;
 }
 
 /* Responsive Design */
@@ -95,7 +98,7 @@ button {
     }
 
     .renderlist-child h3 {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
     }
 
     .renderlist-child p {
@@ -131,6 +134,6 @@ button {
     }
 
     .renderlist-child h3 {
-        font-size: 0.9rem;
+        font-size: 1rem;
     }
 }

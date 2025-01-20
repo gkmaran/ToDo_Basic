@@ -9,7 +9,7 @@ function TaskItem({ todos, deleteTask, toggleItem, editTask }) {
     const oneDayInMs = 24 * 60 * 60 * 1000; 
     const now = Date.now()
       return todos.filter((task) => {
-      const createdAtTime = new Date(task.created_At).getTime(); 
+      const createdAtTime = Date.parse(task.created_At); 
       return !task.is_completed && now - createdAtTime > oneDayInMs;
     });
   };

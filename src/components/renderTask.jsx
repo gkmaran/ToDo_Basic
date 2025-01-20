@@ -7,7 +7,7 @@ function TaskItem({ todos, deleteTask, toggleItem, editTask }) {
 
   const getPendingTasks = () => {
     const oneDayInMs = 24 * 60 * 60 * 1000; 
-    const now = new Date().getTime(); 
+    const now = Date.now()
       return todos.filter((task) => {
       const createdAtTime = new Date(task.created_At).getTime(); 
       return !task.is_completed && now - createdAtTime > oneDayInMs;
@@ -17,7 +17,6 @@ function TaskItem({ todos, deleteTask, toggleItem, editTask }) {
 
   const completedTasks = getCompletedTasks();
   const pendingTasks = getPendingTasks();
-  console.log(pendingTasks)
 
   return (
     <div className="render-list">

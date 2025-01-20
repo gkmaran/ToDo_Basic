@@ -2,29 +2,18 @@ import { useState } from 'react';
 import './renderTask.css';
 
 function TaskItem({ todos, deleteTask, toggleItem, editTask }) {
-  const [currentView, setCurrentView] = useState('all');
+  const [currentView, setCurrentView] = useState('all'); 
+  const getCompletedTasks = () => todos.filter((item) => item.is_completed);
 
-  // Function to format date and time
-  const formatDateAndTime = (dateString) => {
-    const date = new Date(dateString);
-    const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    const formattedTime = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-    return `${formattedDate} at ${formattedTime}`;
-  };
-
-  // Function to get tasks pending for more than 24 hours
   const getPendingTasks = () => {
-    const oneDayInMs = 24 * 60 * 60 * 1000; // 1 day in milliseconds
-    const now = Date.now();
-
-    return todos.filter((task) => {
-      const createdAtTime = Date.parse(task.created_At); // Ensure valid date parsing
-      if (isNaN(createdAtTime)) return false;
+    const oneDayInMs = 24 * 60 * 60 * 1000; 
+    const now = Date.now()
+      return todos.filter((task) => {
+      const createdAtTime = Date.parse(task.created_At); 
       return !task.is_completed && now - createdAtTime > oneDayInMs;
     });
   };
-
-  const getCompletedTasks = () => todos.filter((item) => item.is_completed);
+  
 
   const completedTasks = getCompletedTasks();
   const pendingTasks = getPendingTasks();
@@ -52,9 +41,9 @@ function TaskItem({ todos, deleteTask, toggleItem, editTask }) {
                   {item.name}
                 </h3>
                 {item.editedAt ? (
-                  <p>Edited At: {formatDateAndTime(item.editedAt)}</p>
+                  <p>Edited At: {item.editedAt}</p>
                 ) : (
-                  <p>Created At: {formatDateAndTime(item.created_At)}</p>
+                  <p>Created At: {item.created_At}</p>
                 )}
                 <button className="delBtn" onClick={() => deleteTask(item.id)}>
                   <i className="fa fa-trash" aria-hidden="true"></i>
@@ -77,7 +66,7 @@ function TaskItem({ todos, deleteTask, toggleItem, editTask }) {
             pendingTasks.map((item) => (
               <div key={item.id} className="renderlist-child">
                 <h3>{item.name}</h3>
-                <p>Pending Since: {formatDateAndTime(item.created_At)}</p>
+                <p>pending Since: {item.created_At}</p>
                 <button className="delBtn" onClick={() => deleteTask(item.id)}>
                   <i className="fa fa-trash" aria-hidden="true"></i>
                 </button>
@@ -96,7 +85,7 @@ function TaskItem({ todos, deleteTask, toggleItem, editTask }) {
             completedTasks.map((item) => (
               <div key={item.id} className="renderlist-child">
                 <h3>{item.name}</h3>
-                <p>Completed At: {formatDateAndTime(item.completedAt)}</p>
+                <p>Completed At: {item.completedAt}</p>
                 <button className="delBtn" onClick={() => deleteTask(item.id)}>
                   <i className="fa fa-trash" aria-hidden="true"></i>
                 </button>
@@ -112,4 +101,3 @@ function TaskItem({ todos, deleteTask, toggleItem, editTask }) {
 }
 
 export default TaskItem;
-
